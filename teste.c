@@ -14,7 +14,11 @@ int main(){
 	scanf("%d", &opcao);	
 		switch(opcao){
 	
-			case 1: 
+			case 1:
+				//mpv 2pac.mp3 --no-audio-display --no-resume-playback --no-terminal --input-ipc-server=/tmp/mpvsocket &
+				// para pausar: echo '{ "command": ["set_property", "pause", true] }' | socat - /tmp/mpvsocket
+				//para voltar o play: echo '{ "command": ["set_property", "pause", false] }' | socat - /tmp/mpvsocket
+				//matar processo: pkill mpv
 				system("mpv 2pac.mp3 --no-audio-display --no-resume-playback --no-terminal &");
 				break;
 			case 2:
