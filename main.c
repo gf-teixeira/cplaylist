@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-
+#include <dirent.h>
 struct Node{
     int id; // id usado para ordenar por ordem de inserção.
     char title[15];
@@ -40,10 +39,10 @@ int main(){
         switch(option){
 
             case 7:
-                //play
                 //toca primeiro elemento
                 break;
-
+            default:
+                break;
 
 
         }
