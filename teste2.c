@@ -5,6 +5,7 @@
 
 #include <string.h>
 
+/*Programa lista os arquivos presentes no diretório atual.*/
 int main(void)
 
 {

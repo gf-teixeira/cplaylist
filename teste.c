@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*Testando a integração com o mpv.*/
 int main(){
 
 	int opcao=-1;
