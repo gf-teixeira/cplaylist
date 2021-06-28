@@ -43,7 +43,8 @@ void insertAtBegin(struct Node** head){
     (*head)->prev = new_node;
     (*head) = new_node;
 
-    printf("\nElemento adicionado com sucesso.");
+    system("clear");
+    printf("\nMusica adicionada com sucesso.");
 }
 
 void insert(struct Node* item){
@@ -63,7 +64,9 @@ void insert(struct Node* item){
     }
     item->next = new_node;
     count++;
-    printf("\nElemento adicionado com sucesso.");
+
+    system("clear");
+    printf("\nMusica adicionada com sucesso.");
 }
 void insertAtEnd(struct Node** head){
 
@@ -94,20 +97,22 @@ void insertAtEnd(struct Node** head){
     new_node->prev = last;
     count++;
 
-    printf("\nElemento adicionado com sucesso.");
+    system("clear");
+    printf("\nMusica adicionada com sucesso.");
 }
 
 void list(struct Node* head){
 
+    system("clear");
     if(isEmpty(head)){
         printf("Lista vazia");
         return;
     }
-
+    printf("\n*** Playlist ***\n");
     struct Node* aux = head;
     while(aux != NULL){
-        printf("\n%d", aux->id);
-        printf(" %s", aux->title);
+        printf("[%d]", aux->id);
+        printf(" %s ", aux->title);
         aux = aux->next;
     }
 
@@ -129,7 +134,6 @@ void sortById(struct Node** head){
 
         while(next){
             if(current->id > next->id){
-                printf("\ncurrent->prev: %p", current->prev);
 
                 aux=current;
                 aux->next = current->next;
@@ -143,8 +147,6 @@ void sortById(struct Node** head){
                 current->next = next->next;
 
                 next->next = current;
-
-                printf("\nnext->prev: %p", next->prev);
 
                 if(current == (*head)){
                     (*head) = next;
@@ -174,7 +176,7 @@ void sortByTitle(struct Node** head){
 
         while(next){
             if(strcmp(current->title, next->title)>0){
-                printf("\ncurrent->prev: %p", current->prev);
+                //printf("\ncurrent->prev: %p", current->prev);
 
                 aux=current;
                 aux->next = current->next;
@@ -189,7 +191,7 @@ void sortByTitle(struct Node** head){
 
                 next->next = current;
 
-                printf("\nnext->prev: %p", next->prev);
+                //printf("\nnext->prev: %p", next->prev);
 
                 if(current == (*head)){
                     (*head) = next;
@@ -219,6 +221,9 @@ void delete(struct Node** head, struct Node* item){
         item->prev->next = item->next;
     }
     free(item);
+    system("clear");
+    printf("\n Musica removida.");
+
     return;
 
 
@@ -234,9 +239,10 @@ struct Node* playSong(struct Node* item){
     strcat(command, ".mp3");
     strcpy(aux_command, " --no-audio-display --no-resume-playback --no-terminal --input-ipc-server=/tmp/mpvsocket &");
     strcat(command, aux_command);
-    //comando para tocar proxima musica se essa terminar...
     system(command);
 
+    system("clear");
+    printf("\nTocando \U0001F3B5 %s", item->title);
     return item;
 
 }
@@ -244,10 +250,14 @@ struct Node* playSong(struct Node* item){
 void stop (){
 
     system("echo \'{ \"command\" : [\"set_property\", \"pause\", true] }\' | socat - /tmp/mpvsocket");
+
+    system("clear");
 }
 
 void continueSong(){
     system("echo \'{ \"command\" : [\"set_property\", \"pause\", false] }\' | socat - /tmp/mpvsocket");
+
+    system("clear");
 }
 struct Node* returnItem (struct Node* head, int id){
     struct Node* aux = head;
@@ -258,7 +268,7 @@ struct Node* returnItem (struct Node* head, int id){
 
     return aux;
 }
-void delete_list(struct Node** head){
+void deleteList(struct Node** head){
     struct Node* current = (*head);
     struct Node* next = NULL;
 
@@ -269,8 +279,6 @@ void delete_list(struct Node** head){
         current = next;
     }
 
-    /* deref head_ref to affect the real head back
-        in the caller. */
     (*head) = NULL;
 }
 int main(){
@@ -282,7 +290,7 @@ int main(){
     int aux;
     do{
         printf("\n\n");
-        printf("****MENU****");
+        printf("**** MENU ****");
         printf("\n0 - Sair");
         printf("\n1 - Inserir");
         printf("\n2 - Excluir");
@@ -311,7 +319,7 @@ int main(){
                     case 2:
                         if(!isEmpty(head)){
                             list(head);
-                            printf("\nDeseja inserir apos qual musica?");
+                            printf("\nDeseja inserir apos qual musica?\n");
                             scanf("%d", &aux);
                             insert(returnItem(head, aux));
                         }
@@ -320,7 +328,7 @@ int main(){
                         insertAtEnd(&head);
                         break;
                     default:
-                        printf("valor invalido");
+                        printf("\nValor Invalido");
                         break;
 
                 }
@@ -329,7 +337,7 @@ int main(){
             case 2:
                 if(!isEmpty(head)){
                     list(head);
-                    printf("\nQual Musica deseja excluir? ");
+                    printf("\nQual Musica deseja excluir?\n");
                     scanf("%d", &aux);
                     //returnItem retorna o endereço do item com o id procurado.
                     //dessa forma, a função delete recebe o endereço de head e o endereço do elemento a ser removido
@@ -372,6 +380,6 @@ int main(){
         }
     }while(option != 0);
 
-    delete_list(&head);
+    deleteList(&head);
     return 0;
 }
