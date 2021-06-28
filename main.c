@@ -79,8 +79,23 @@ void delete(struct Node** head, struct Node* item){
 
 
 }
+//retorna o endereço do item que está tocando.
+struct Node* play(struct Node* item){
+    system("pkill mpv");
+    char aux_command[256];
+    char command[256];
+    strcpy(aux_command, " --no-audio-display --no-resume-playback --no-terminal --input-ipc-server=/tmp/mpvsocket &");
+    strcpy(command, "mpv ");
+    strcat(command, item->title);
+    strcat(command, ".mp3");
+    strcat(command, aux_command);
+				//mpv 2pac.mp3 --no-audio-display --no-resume-playback --no-terminal --input-ipc-server=/tmp/mpvsocket &
+				// para pausar: echo '{ "command": ["set_property", "pause", true] }' | socat - /tmp/mpvsocket
+				//para voltar o play: echo '{ "command": ["set_property", "pause", false] }' | socat - /tmp/mpvsocket
+				//matar processo: pkill mpv
+    system(command);
 
-void play(struct Node* head, int i){
+    return item;
 
 }
 struct Node* returnItem (struct Node* head, int id){
@@ -111,6 +126,7 @@ int main(){
 
 
     struct Node* head = NULL;
+    struct Node* aux_node;
     int option = -1;
     int aux;
     do{
@@ -137,7 +153,6 @@ int main(){
                 if(list(head)==1){
                     printf("\nQual Musica deseja excluir? ");
                     scanf("%d", &aux);
-
                     //returnItem retorna o endereço do item com o id procurado.
                     //dessa forma, a função delete recebe o endereço de head e o endereço do elemento a ser removido
                     delete(&head, returnItem(head, aux));
@@ -148,8 +163,11 @@ int main(){
                 list(head);
                 break;
 
-            case 7:
-                //toca primeiro elemento
+            case 6:
+                aux_node = play(head);
+                break;
+            case 8:
+                aux_node = play(aux_node->next);
                 break;
             default:
                 break;
