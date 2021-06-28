@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int x=0;
+int count=0;
 
 struct Node{
     int id; // id usado para ordenar por ordem de inserção.
@@ -11,22 +11,79 @@ struct Node{
     struct Node *next;
 };
 
-//insert at end
+int isEmpty(struct Node* head){
+    if(head == NULL){
+        return 1;
+    }
+    return 0;
+}
+void insertAtBegin(struct Node** head){
+
+    char title_aux[256];
+    printf("\nDigite o nome da musica:");
+    scanf("%s", title_aux);
+
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+
+
+    strcpy(new_node->title, title_aux);
+    new_node->prev = NULL;
+    new_node->id = count;
+    count++;
+    //se a lista estiver vazia o ponteiro head apontará para o novo elemento
+    // e o atributo next do novo elemento recebe NULL
+
+    if(isEmpty(*head)){
+        (*head) = new_node;
+        new_node->next = NULL;
+        return;
+    }
+
+    new_node->next = (*head);
+    (*head)->prev = new_node;
+
+    (*head) = new_node;
+
+    printf("\nElemento adicionado com sucesso.");
+}
+
+void insert(struct Node* item){
+    char title_aux[256];
+    printf("\nDigite o nome da musica");
+    scanf("%s", title_aux);
+
+    struct Node * new_node = (struct Node*) malloc(sizeof(struct Node));
+
+    strcpy(new_node->title, title_aux);
+    new_node->id = count;
+    new_node->prev = item;
+    new_node->next = item->next;
+
+    if(item->next != NULL){
+        item->next->prev = new_node;
+    }
+    item->next = new_node;
+    count++;
+    printf("\nElemento adicionado com sucesso.");
+}
 void insertAtEnd(struct Node** head){
 
     char title_aux[256];
-    printf("\nDigite o titulo da musica:");
+    printf("\nDigite o Nome da musica:");
     scanf("%s", title_aux);
 
-    struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
-    newNode->next = NULL;
-    strcpy(newNode->title, title_aux);
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->next = NULL;
+    strcpy(new_node->title, title_aux);
 
     //verificando se a lista está vazia.
+    //
+
+    new_node->id = count;
+    count++;
     if(*head == NULL){
-        newNode->prev = NULL;
-        newNode->id = x;
-        (*head) = newNode;
+        new_node->prev = NULL;
+        (*head) = new_node;
         return;
     }
 
@@ -36,17 +93,18 @@ void insertAtEnd(struct Node** head){
        last = last->next;
     }
 
-    last->next = newNode;
-    newNode->id = last->id + 1;
-    newNode->prev = last;
-    x++;
+    last->next = new_node;
+    new_node->prev = last;
+    count++;
+
+    printf("\nElemento adicionado com sucesso.");
 }
 
-int list(struct Node* head){
+void list(struct Node* head){
 
-    if(head == NULL){
+    if(isEmpty(head)){
         printf("Lista vazia");
-        return 0;
+        return;
     }
 
     struct Node* aux = head;
@@ -55,7 +113,7 @@ int list(struct Node* head){
         printf(" %s", aux->title);
         aux = aux->next;
     }
-    return 1;
+
 
 }
 //item = elemento a ser excluido
@@ -84,15 +142,13 @@ struct Node* playSong(struct Node* item){
     system("pkill mpv");
     char aux_command[256];
     char command[256];
-    strcpy(aux_command, " --no-audio-display --no-resume-playback --no-terminal --input-ipc-server=/tmp/mpvsocket &");
+
     strcpy(command, "mpv ");
     strcat(command, item->title);
     strcat(command, ".mp3");
+    strcpy(aux_command, " --no-audio-display --no-resume-playback --no-terminal --input-ipc-server=/tmp/mpvsocket &");
     strcat(command, aux_command);
-				//mpv 2pac.mp3 --no-audio-display --no-resume-playback --no-terminal --input-ipc-server=/tmp/mpvsocket &
-				// para pausar: echo '{ "command": ["set_property", "pause", true] }' | socat - /tmp/mpvsocket
-				//para voltar o play: echo '{ "command": ["set_property", "pause", false] }' | socat - /tmp/mpvsocket
-				//matar processo: pkill mpv
+
     system(command);
 
     return item;
@@ -133,35 +189,60 @@ void delete_list(struct Node** head){
 }
 int main(){
 
-
-    printf("echo \'{ \"command\" : [\"set_porperty\", \"pause\", true] }\' | socat - /tmp/mpvsocket");
     struct Node* head = NULL;
     struct Node* aux_node;
     int option = -1;
+    int insert_option;
     int aux;
     do{
         printf("\n\n");
+        printf("****MENU****");
         printf("\n0 - Sair");
         printf("\n1 - Inserir");
         printf("\n2 - Excluir");
         printf("\n3 - Listar");
         printf("\n4 - Ordenar por Título");
         printf("\n5 - Ordenar por ordem de inserção");
-        printf("\n6 - Anterior\n");
+        printf("\n6 - Anterior");
         printf("\n7 - Play");
         printf("\n8 - Proxima");
         printf("\n9 - Pausar");
-        printf("\n10 - Voltar a Tocar");
+        printf("\n10 - Voltar a Tocar\n");
         scanf("%d", &option);
 
         switch(option){
 
             case 1:
-                insertAtEnd(&head);
+                printf("\n1 - Inserir no Inicio");
+                printf("\n2 - Inserir entre duas musicas");
+                printf("\n3 - Inserir no Final\n");
+                scanf("%d", &insert_option);
+
+                switch(insert_option){
+                    case 1:
+                        insertAtBegin(&head);
+                        break;
+                    case 2:
+                        if(!isEmpty(head)){
+                            list(head);
+                            printf("\nDeseja inserir apos qual musica?");
+                            scanf("%d", &aux);
+                            insert(returnItem(head, aux));
+                        }
+                        break;
+                    case 3:
+                        insertAtEnd(&head);
+                        break;
+                    default:
+                        printf("valor invalido");
+                        break;
+
+                }
                 break;
 
             case 2:
-                if(list(head)==1){
+                if(!isEmpty(head)){
+                    list(head);
                     printf("\nQual Musica deseja excluir? ");
                     scanf("%d", &aux);
                     //returnItem retorna o endereço do item com o id procurado.
@@ -173,18 +254,13 @@ int main(){
             case 3:
                 list(head);
                 break;
-
             case 6:
-
                 if(aux_node->prev != NULL){
                     aux_node = playSong(aux_node->prev);
                 }
-
                 break;
             case 7:
-
                 aux_node = playSong(head);
-
                 break;
 
             case 8:
@@ -200,11 +276,8 @@ int main(){
                 break;
             default:
                 break;
-
-
         }
     }while(option != 0);
-        // struct Node* head = (struct Node*) malloc(sizeof(struct Node));
 
     delete_list(&head);
     return 0;
