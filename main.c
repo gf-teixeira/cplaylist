@@ -80,7 +80,7 @@ void delete(struct Node** head, struct Node* item){
 
 }
 //retorna o endereço do item que está tocando.
-struct Node* play(struct Node* item){
+struct Node* playSong(struct Node* item){
     system("pkill mpv");
     char aux_command[256];
     char command[256];
@@ -97,6 +97,15 @@ struct Node* play(struct Node* item){
 
     return item;
 
+}
+
+void stop (){
+
+    system("echo \'{ \"command\" : [\"set_property\", \"pause\", true] }\' | socat - /tmp/mpvsocket");
+}
+
+void continueSong(){
+    system("echo \'{ \"command\" : [\"set_property\", \"pause\", false] }\' | socat - /tmp/mpvsocket");
 }
 struct Node* returnItem (struct Node* head, int id){
     struct Node* aux = head;
@@ -125,6 +134,7 @@ void delete_list(struct Node** head){
 int main(){
 
 
+    printf("echo \'{ \"command\" : [\"set_porperty\", \"pause\", true] }\' | socat - /tmp/mpvsocket");
     struct Node* head = NULL;
     struct Node* aux_node;
     int option = -1;
@@ -137,10 +147,11 @@ int main(){
         printf("\n3 - Listar");
         printf("\n4 - Ordenar por Título");
         printf("\n5 - Ordenar por ordem de inserção");
-        printf("\n6 - Play");
-        printf("\n7 - Pausar");
+        printf("\n6 - Anterior\n");
+        printf("\n7 - Play");
         printf("\n8 - Proxima");
-        printf("\n9 - Anterior\n");
+        printf("\n9 - Pausar");
+        printf("\n10 - Voltar a Tocar");
         scanf("%d", &option);
 
         switch(option){
@@ -164,10 +175,28 @@ int main(){
                 break;
 
             case 6:
-                aux_node = play(head);
+
+                if(aux_node->prev != NULL){
+                    aux_node = playSong(aux_node->prev);
+                }
+
                 break;
+            case 7:
+
+                aux_node = playSong(head);
+
+                break;
+
             case 8:
-                aux_node = play(aux_node->next);
+                if(aux_node->next != NULL){
+                    aux_node = playSong(aux_node->next);
+                }
+                break;
+            case 9:
+                stop();
+                break;
+            case 10:
+                continueSong();
                 break;
             default:
                 break;
