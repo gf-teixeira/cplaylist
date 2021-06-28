@@ -5,8 +5,8 @@
 int count=0;
 
 struct Node{
-    int id; // id usado para ordenar por ordem de inserção.
-    char title[15];
+    int id; // id é incrementado por ordem de inserção
+    char title[256];
     struct Node *prev;
     struct Node *next;
 };
@@ -41,7 +41,6 @@ void insertAtBegin(struct Node** head){
 
     new_node->next = (*head);
     (*head)->prev = new_node;
-
     (*head) = new_node;
 
     printf("\nElemento adicionado com sucesso.");
@@ -77,8 +76,6 @@ void insertAtEnd(struct Node** head){
     strcpy(new_node->title, title_aux);
 
     //verificando se a lista está vazia.
-    //
-
     new_node->id = count;
     count++;
     if(*head == NULL){
@@ -116,7 +113,96 @@ void list(struct Node* head){
 
 
 }
-//item = elemento a ser excluido
+
+void sortById(struct Node** head){
+    if(isEmpty(*head)){
+        printf("\nLista vazia.");
+        return;
+    }
+
+    struct Node* current = *head;
+    struct Node* next;
+    struct Node* aux;
+
+    while(current && current->next){
+        next = current->next;
+
+        while(next){
+            if(current->id > next->id){
+                printf("\ncurrent->prev: %p", current->prev);
+
+                aux=current;
+                aux->next = current->next;
+
+                if(current->prev != NULL){
+                    current->prev->next = next;
+                }
+                next->prev = current->prev;
+
+                current->prev = next;
+                current->next = next->next;
+
+                next->next = current;
+
+                printf("\nnext->prev: %p", next->prev);
+
+                if(current == (*head)){
+                    (*head) = next;
+                }
+            }
+            list(*head);
+            next = next->next;
+        }
+        current = current->next;
+    }
+
+}
+
+void sortByTitle(struct Node** head){
+
+    if(isEmpty(*head)){
+        printf("\nLista vazia.");
+        return;
+    }
+
+    struct Node* current = *head;
+    struct Node* next;
+    struct Node* aux;
+
+    while(current && current->next){
+        next = current->next;
+
+        while(next){
+            if(strcmp(current->title, next->title)>0){
+                printf("\ncurrent->prev: %p", current->prev);
+
+                aux=current;
+                aux->next = current->next;
+
+                if(current->prev != NULL){
+                    current->prev->next = next;
+                }
+                next->prev = current->prev;
+
+                current->prev = next;
+                current->next = next->next;
+
+                next->next = current;
+
+                printf("\nnext->prev: %p", next->prev);
+
+                if(current == (*head)){
+                    (*head) = next;
+                }
+            }
+            list(*head);
+            next = next->next;
+        }
+        current = current->next;
+    }
+
+}
+
 void delete(struct Node** head, struct Node* item){
 
     if((*head) == item){
@@ -148,7 +234,7 @@ struct Node* playSong(struct Node* item){
     strcat(command, ".mp3");
     strcpy(aux_command, " --no-audio-display --no-resume-playback --no-terminal --input-ipc-server=/tmp/mpvsocket &");
     strcat(command, aux_command);
-
+    //comando para tocar proxima musica se essa terminar...
     system(command);
 
     return item;
@@ -254,6 +340,13 @@ int main(){
             case 3:
                 list(head);
                 break;
+            case 4:
+                sortByTitle(&head);
+                break;
+            case 5:
+                sortById(&head);
+                break;
+
             case 6:
                 if(aux_node->prev != NULL){
                     aux_node = playSong(aux_node->prev);
