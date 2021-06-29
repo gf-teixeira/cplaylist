@@ -1,3 +1,15 @@
+/*********
+Nome do programador: Gabriel Teixeira
+Data do Programa: 28/06/2021
+Descrição do programa: Implementação de uma playlist utilizando lista duplamente encadeada.
+O programa consegue tocar as musicas se os nomes forem válidos e o arquivo mp3  de mesmo nome
+estiver na pasta do programa. Exemplo: Há um arquivo musica.mp3 na pasta do projeto, então
+ao inserir uma musica na lista basta inserir o nome "musica".
+Principais dificuldades encontradas nesta implementação: -
+OBS: o programa possue alguns métodos nativos de sistemas Unix, além de utilizar o mpv media player
+por linha de comando, então não é possível tocar música utilizando Windows.
+Para rodar o sistema devidamente é necessário ter: *SO derivado de Unix *mpv player instalado.
+*********/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,7 +32,7 @@ int isEmpty(struct Node* head){
 void insertAtBegin(struct Node** head){
 
     char title_aux[256];
-    printf("\nDigite o nome da musica:");
+    printf("\nDigite o nome da musica: ");
     scanf("%s", title_aux);
 
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
@@ -36,6 +48,9 @@ void insertAtBegin(struct Node** head){
     if(isEmpty(*head)){
         (*head) = new_node;
         new_node->next = NULL;
+
+        system("clear");
+        printf("\nMusica adicionada com sucesso.");
         return;
     }
 
@@ -49,7 +64,7 @@ void insertAtBegin(struct Node** head){
 
 void insert(struct Node* item){
     char title_aux[256];
-    printf("\nDigite o nome da musica");
+    printf("\nDigite o nome da musica: ");
     scanf("%s", title_aux);
 
     struct Node * new_node = (struct Node*) malloc(sizeof(struct Node));
@@ -71,8 +86,8 @@ void insert(struct Node* item){
 void insertAtEnd(struct Node** head){
 
     char title_aux[256];
-    printf("\nDigite o Nome da musica:");
-    scanf("%s", title_aux);
+    printf("\nDigite o Nome da musica: ");
+    scanf( "%s", title_aux);
 
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
     new_node->next = NULL;
@@ -84,6 +99,8 @@ void insertAtEnd(struct Node** head){
     if(*head == NULL){
         new_node->prev = NULL;
         (*head) = new_node;
+        system("clear");
+        printf("\nMusica adicionada com sucesso.");
         return;
     }
 
@@ -95,7 +112,6 @@ void insertAtEnd(struct Node** head){
 
     last->next = new_node;
     new_node->prev = last;
-    count++;
 
     system("clear");
     printf("\nMusica adicionada com sucesso.");
@@ -124,86 +140,113 @@ void sortById(struct Node** head){
         printf("\nLista vazia.");
         return;
     }
-
+    int swapped;
     struct Node* current = *head;
     struct Node* next;
-    struct Node* aux;
-
     while(current && current->next){
         next = current->next;
-
         while(next){
+            swapped =0;
             if(current->id > next->id){
-
-                aux=current;
-                aux->next = current->next;
-
+                swapped =1;
+                const struct Node* aux_current_prev = current->prev;
+                const struct Node* aux_current_next = current->next;
                 if(current->prev != NULL){
                     current->prev->next = next;
                 }
-                next->prev = current->prev;
-
-                current->prev = next;
+                if(current->next != NULL && current->next != next){
+                    current->next->prev = next;
+                }
+                if(next->prev != NULL && next->prev != current){
+                    next->prev->next = current;
+                }
+                if(next->next != NULL){
+                    next->next->prev = current;
+                }
+                if(next->prev != current){
+                    current->prev = next->prev;
+                }else{
+                    current->prev = next;
+                }
                 current->next = next->next;
-
-                next->next = current;
-
+                next->prev = (struct Node*) aux_current_prev;
+                if(aux_current_next != next){
+                    next->next = (struct Node*)aux_current_next;
+                }else{
+                    next->next = current;
+                }
                 if(current == (*head)){
                     (*head) = next;
                 }
             }
-            list(*head);
+            if(swapped==1){
+                current = next;
+            }
             next = next->next;
         }
         current = current->next;
     }
 
+    system("clear");
+    list(*head);
 }
 
 void sortByTitle(struct Node** head){
-
     if(isEmpty(*head)){
         printf("\nLista vazia.");
         return;
     }
-
+    int swapped;
     struct Node* current = *head;
     struct Node* next;
-    struct Node* aux;
-
     while(current && current->next){
         next = current->next;
-
         while(next){
+            swapped =0;
             if(strcmp(current->title, next->title)>0){
-                //printf("\ncurrent->prev: %p", current->prev);
-
-                aux=current;
-                aux->next = current->next;
-
+                swapped =1;
+                const struct Node* aux_current_prev = current->prev;
+                const struct Node* aux_current_next = current->next;
                 if(current->prev != NULL){
                     current->prev->next = next;
                 }
-                next->prev = current->prev;
-
-                current->prev = next;
+                if(current->next != NULL && current->next != next){
+                    current->next->prev = next;
+                }
+                if(next->prev != NULL && next->prev != current){
+                    next->prev->next = current;
+                }
+                if(next->next != NULL){
+                    next->next->prev = current;
+                }
+                if(next->prev != current){
+                    current->prev = next->prev;
+                }else{
+                    current->prev = next;
+                }
                 current->next = next->next;
-
-                next->next = current;
-
-                //printf("\nnext->prev: %p", next->prev);
-
+                next->prev = (struct Node*) aux_current_prev;
+                if(aux_current_next != next){
+                    next->next = (struct Node*)aux_current_next;
+                }else{
+                    next->next = current;
+                }
                 if(current == (*head)){
                     (*head) = next;
                 }
             }
-            list(*head);
+            if(swapped==1){
+                current = next;
+            }
             next = next->next;
         }
         current = current->next;
     }
-
+    system("clear");
+    list(*head);
 }
+
+
 
 void delete(struct Node** head, struct Node* item){
 
@@ -237,12 +280,18 @@ struct Node* playSong(struct Node* item){
     strcpy(command, "mpv ");
     strcat(command, item->title);
     strcat(command, ".mp3");
+
+
+
+    /*mpv can be controlled by external programs using the JSON-based IPC protocol. It can be enabled by specifying the path
+     * to a unix socket or a named pipe using the option
+     * --input-ipc-server. Clients can connect to this socket and send commands to the player or receive events from it.*/
     strcpy(aux_command, " --no-audio-display --no-resume-playback --no-terminal --input-ipc-server=/tmp/mpvsocket &");
     strcat(command, aux_command);
     system(command);
 
     system("clear");
-    printf("\nTocando \U0001F3B5 %s", item->title);
+    printf("\nTocando \U0001F3B5 %s \U0001F3B5", item->title);
     return item;
 
 }
@@ -284,7 +333,7 @@ void deleteList(struct Node** head){
 int main(){
 
     struct Node* head = NULL;
-    struct Node* aux_node;
+    struct Node* current_song = NULL;
     int option = -1;
     int insert_option;
     int aux;
@@ -295,18 +344,18 @@ int main(){
         printf("\n1 - Inserir");
         printf("\n2 - Excluir");
         printf("\n3 - Listar");
-        printf("\n4 - Ordenar por Título");
-        printf("\n5 - Ordenar por ordem de inserção");
+        printf("\n4 - Ordenar por Ordem de Insercao");
+        printf("\n5 - Ordenar por Título");
         printf("\n6 - Anterior");
         printf("\n7 - Play");
         printf("\n8 - Proxima");
         printf("\n9 - Pausar");
         printf("\n10 - Voltar a Tocar\n");
         scanf("%d", &option);
-
         switch(option){
 
             case 1:
+                system("clear");
                 printf("\n1 - Inserir no Inicio");
                 printf("\n2 - Inserir entre duas musicas");
                 printf("\n3 - Inserir no Final\n");
@@ -349,32 +398,41 @@ int main(){
                 list(head);
                 break;
             case 4:
-                sortByTitle(&head);
-                break;
-            case 5:
                 sortById(&head);
                 break;
-
+            case 5:
+                sortByTitle(&head);
+                break;
             case 6:
-                if(aux_node->prev != NULL){
-                    aux_node = playSong(aux_node->prev);
+                if((current_song != NULL) && (current_song->prev != NULL)){
+                    current_song = playSong(current_song->prev);
                 }
                 break;
             case 7:
-                aux_node = playSong(head);
-                break;
-
-            case 8:
-                if(aux_node->next != NULL){
-                    aux_node = playSong(aux_node->next);
+                if(!(isEmpty(head))){
+                    current_song = playSong(head);
                 }
                 break;
+            case 8:
+
+                if((current_song != NULL) && (current_song->next != NULL)){
+                    current_song = playSong(current_song->next);
+                }
+
+                break;
             case 9:
-                stop();
+
+                if(current_song != NULL){
+                    stop();
+                }
+
                 break;
             case 10:
-                continueSong();
+                if(current_song != NULL){
+                    continueSong();
+                }
                 break;
+
             default:
                 break;
         }
