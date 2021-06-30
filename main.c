@@ -29,7 +29,7 @@ int isEmpty(struct Node* head){
     }
     return 0;
 }
-void insertAtBegin(struct Node** head, char title[], int id){
+int insertAtBegin(struct Node** head, char title[], int id){
 
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
 
@@ -41,10 +41,8 @@ void insertAtBegin(struct Node** head, char title[], int id){
     if(isEmpty(*head)){
         (*head) = new_node;
         new_node->next = NULL;
-
         system("clear");
-        printf("\nMusica adicionada com sucesso.");
-        return;
+        return 0;
     }
 
     new_node->next = (*head);
@@ -52,10 +50,10 @@ void insertAtBegin(struct Node** head, char title[], int id){
     (*head) = new_node;
 
     system("clear");
-    printf("\nMusica adicionada com sucesso.");
+    return 1;
 }
 
-void insert(struct Node* item){
+int insert(struct Node* item){
     char title_aux[256];
     printf("\nDigite o nome da musica: ");
     scanf("%s", title_aux);
@@ -74,9 +72,9 @@ void insert(struct Node* item){
     count++;
 
     system("clear");
-    printf("\nMusica adicionada com sucesso.");
+    return 1;
 }
-void insertAtEnd(struct Node** head, char title[], int id){
+int insertAtEnd(struct Node** head, char title[], int id){
 
 
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
@@ -86,12 +84,10 @@ void insertAtEnd(struct Node** head, char title[], int id){
     strcpy(new_node->title, title);
 
     if(*head == NULL){
-        printf("ops");
         new_node->prev = NULL;
         (*head) = new_node;
         system("clear");
-        printf("\nMusica adicionada com sucesso.");
-        return;
+        return 0;
     }
 
     struct Node* last = (*head);
@@ -104,14 +100,14 @@ void insertAtEnd(struct Node** head, char title[], int id){
     new_node->prev = last;
 
     system("clear");
-    printf("\nMusica adicionada com sucesso.");
+    return 1;
 }
 
 void list(struct Node* head){
 
     system("clear");
     if(isEmpty(head)){
-        printf("Lista vazia");
+        printf("\nPlaylist vazia");
         return;
     }
     printf("\n*** Playlist ***\n");
@@ -336,6 +332,7 @@ void readingPlaylist(struct Node** head){
     }
     count = new_count;
     system("clear");
+    list(*head);
 }
 
 void deleteList(struct Node** head){
@@ -360,7 +357,8 @@ int main(){
     struct Node* current_song = NULL;
     int option = -1;
     int insert_option;
-    int aux;
+    int item_id;
+    int sucess;
     char aux_title[256];
     do{
         printf("\n\n");
@@ -392,26 +390,30 @@ int main(){
                         printf("\nDigite o nome da musica: ");
                         scanf("%s", aux_title);
                         count++;
-                        insertAtBegin(&head, aux_title, count);
+                        sucess = insertAtBegin(&head, aux_title, count);
                         break;
                     case 2:
                         if(!isEmpty(head)){
                             list(head);
                             printf("\nDeseja inserir apos qual musica?\n");
-                            scanf("%d", &aux);
-                            insert(returnItem(head, aux));
+                            scanf("%d", &item_id);
+                            sucess = insert(returnItem(head, item_id));
                         }
                         break;
                     case 3:
                         printf("\nDigite o nome da musica: ");
                         scanf("%s", aux_title);
                         count++;
-                        insertAtEnd(&head, aux_title, count);
+                        sucess = insertAtEnd(&head, aux_title, count);
                         break;
                     default:
                         printf("\nValor Invalido");
                         break;
 
+                }
+                if(sucess==1){
+
+                    printf("\nMusica adicionada com sucesso.");
                 }
                 break;
 
@@ -419,10 +421,8 @@ int main(){
                 if(!isEmpty(head)){
                     list(head);
                     printf("\nQual Musica deseja excluir?\n");
-                    scanf("%d", &aux);
-                    //returnItem retorna o endereço do item com o id procurado.
-                    //dessa forma, a função delete recebe o endereço de head e o endereço do elemento a ser removido
-                    delete(&head, returnItem(head, aux));
+                    scanf("%d", &item_id);
+                    delete(&head, returnItem(head, item_id));
                 }
                 break;
 
