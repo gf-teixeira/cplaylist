@@ -29,22 +29,15 @@ int isEmpty(struct Node* head){
     }
     return 0;
 }
-void insertAtBegin(struct Node** head){
-
-    char title_aux[256];
-    printf("\nDigite o nome da musica: ");
-    scanf("%s", title_aux);
+void insertAtBegin(struct Node** head, char title[], int id){
 
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
 
-
-    strcpy(new_node->title, title_aux);
     new_node->prev = NULL;
-    new_node->id = count;
-    count++;
+    new_node->id = id;
     //se a lista estiver vazia o ponteiro head apontará para o novo elemento
     // e o atributo next do novo elemento recebe NULL
-
+    strcpy(new_node->title, title);
     if(isEmpty(*head)){
         (*head) = new_node;
         new_node->next = NULL;
@@ -83,20 +76,17 @@ void insert(struct Node* item){
     system("clear");
     printf("\nMusica adicionada com sucesso.");
 }
-void insertAtEnd(struct Node** head){
+void insertAtEnd(struct Node** head, char title[], int id){
 
-    char title_aux[256];
-    printf("\nDigite o Nome da musica: ");
-    scanf( "%s", title_aux);
 
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
     new_node->next = NULL;
-    strcpy(new_node->title, title_aux);
+    new_node->id = id;
 
-    //verificando se a lista está vazia.
-    new_node->id = count;
-    count++;
+    strcpy(new_node->title, title);
+
     if(*head == NULL){
+        printf("ops");
         new_node->prev = NULL;
         (*head) = new_node;
         system("clear");
@@ -266,7 +256,7 @@ void delete(struct Node** head, struct Node* item){
     free(item);
     system("clear");
     printf("\n Musica removida.");
-
+    count--;
     return;
 
 
@@ -317,6 +307,37 @@ struct Node* returnItem (struct Node* head, int id){
 
     return aux;
 }
+void savePlaylist(struct Node* head){
+    struct Node* item = head;
+    FILE *f_playlist;
+    f_playlist = fopen("playlist.dat", "wb+");
+
+    while(item != NULL){
+        fwrite(item, sizeof(struct Node), 1, f_playlist);
+        item = item->next;
+    }
+    fclose(f_playlist);
+}
+void readingPlaylist(struct Node** head){
+    FILE * f_playlist;
+    int new_count=0;
+    if ((f_playlist = fopen("playlist.dat", "ab+")) == NULL)
+	{
+		printf("File open error\n ");
+		return;
+	}
+    struct Node* item = (struct Node*)malloc(sizeof(struct Node));
+
+    while(fread(item, sizeof(struct Node), 1, f_playlist)){
+        if(item){
+            new_count = item->id;
+            insertAtEnd(head, item->title, item->id);
+        }
+    }
+    count = new_count;
+    system("clear");
+}
+
 void deleteList(struct Node** head){
     struct Node* current = (*head);
     struct Node* next = NULL;
@@ -332,11 +353,15 @@ void deleteList(struct Node** head){
 }
 int main(){
 
+
     struct Node* head = NULL;
+
+    readingPlaylist(&head);
     struct Node* current_song = NULL;
     int option = -1;
     int insert_option;
     int aux;
+    char aux_title[256];
     do{
         printf("\n\n");
         printf("**** MENU ****");
@@ -363,7 +388,11 @@ int main(){
 
                 switch(insert_option){
                     case 1:
-                        insertAtBegin(&head);
+
+                        printf("\nDigite o nome da musica: ");
+                        scanf("%s", aux_title);
+                        count++;
+                        insertAtBegin(&head, aux_title, count);
                         break;
                     case 2:
                         if(!isEmpty(head)){
@@ -374,7 +403,10 @@ int main(){
                         }
                         break;
                     case 3:
-                        insertAtEnd(&head);
+                        printf("\nDigite o nome da musica: ");
+                        scanf("%s", aux_title);
+                        count++;
+                        insertAtEnd(&head, aux_title, count);
                         break;
                     default:
                         printf("\nValor Invalido");
@@ -438,6 +470,7 @@ int main(){
         }
     }while(option != 0);
 
+    savePlaylist(head);
     deleteList(&head);
     return 0;
 }
