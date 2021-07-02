@@ -6,9 +6,8 @@ O programa consegue tocar as musicas se os nomes forem válidos e o arquivo mp3 
 estiver na pasta do programa. Exemplo: Há um arquivo musica.mp3 na pasta do projeto, então
 ao inserir uma musica na lista basta inserir o nome "musica".
 Principais dificuldades encontradas nesta implementação: -
-OBS: o programa possue alguns métodos nativos de sistemas Unix, além de utilizar o mpv media player
-por linha de comando, então não é possível tocar música utilizando Windows.
-Para rodar o sistema devidamente é necessário ter: *SO derivado de Unix *mpv player instalado.
+OBS: o programa possue alguns métodos nativos de sistemas Unix, além disso, é necessário ter o MPV Player 
+instalado.
 *********/
 #include <stdio.h>
 #include <stdlib.h>
