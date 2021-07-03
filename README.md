@@ -34,15 +34,15 @@ cplaylist possibilita:
 
 - compile
 
-    gcc *.c -o cplaylist
+      gcc *.c -o cplaylist
     
  - execute
 
-    cplaylist
+       cplaylist
     
 Para conseguir tocar músicas é necessário possuir um arquivo mp3 de mesmo nome no diretório. Exemplo: quero tocar a música "valasy.mp3", bastar ter o arquivo no diretório raiz do projeto e, no momento da inserção da música na playlist, basta inserir o nome "valasy".
 
+# Resultado no youtube:
 
-![Resultado no youtube](https://youtu.be/_QsW9ufRNiU)
+[![Resultado no Youtube](https://i.ytimg.com/vi/_QsW9ufRNiU/maxresdefault.jpg)](https://www.youtube.com/watch?v=_QsW9ufRNiU)
 
-[![Resultado no youtube](https://i.ytimg.com/vi/_QsW9ufRNiU/maxresdefault.jpg)](https://www.youtube.com/watch?v=_QsW9ufRNiU "cplaylist - Doubly Linked List")
