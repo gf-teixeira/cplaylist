@@ -7,7 +7,7 @@
 
 
 struct Node* playSong(struct Node* item){
-    system("pkill mpv");
+    system("echo \'{ \"command\": [\"quit\"] }\' | socat - /tmp/mpvsocket");
     char aux_command[256];
     char command[256];
 
