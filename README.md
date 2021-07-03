@@ -34,7 +34,7 @@ cplaylist possibilita:
 
 - compile
 
-    cpp *.cpp -o cplaylist
+    gcc *.c -o cplaylist
     
  - execute
 
@@ -44,3 +44,5 @@ Para conseguir tocar músicas é necessário possuir um arquivo mp3 de mesmo nom
 
 
 ![Resultado no youtube](https://youtu.be/_QsW9ufRNiU)
+
+[![Resultado no youtube](https://i.ytimg.com/vi/_QsW9ufRNiU/maxresdefault.jpg)](https://www.youtube.com/watch?v=_QsW9ufRNiU "cplaylist - Doubly Linked List")
