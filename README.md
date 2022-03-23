@@ -40,7 +40,7 @@ cplaylist possibilita:
 
        ./cplaylist
     
-Para conseguir tocar músicas é necessário possuir um arquivo mp3 de mesmo nome no diretório raiz do projeto. 
+Para conseguir tocar uma música é necessário possuir um arquivo mp3 de mesmo nome no diretório raiz do projeto. 
 Exemplo: quero tocar a música "Stromae - Alors On Danse.mp3", então é necessário ter o arquivo no diretório raiz do projeto e, no momento da inserção da música na playlist, basta inserir o mesmo nome do arquivo (sem a extensão .mp3).
 
 
