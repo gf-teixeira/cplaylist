@@ -11,6 +11,6 @@ int insertAtEnd(struct Node** head, char title[], int id);
 void list(struct Node* head);
 int removeItem(struct Node** head, struct Node* item);
 void savePlaylist(struct Node* head);
-int readingPlaylist(struct Node** head);
+int readPlaylist(struct Node** head);
 void deleteList(struct Node** head);
 #endif // LIST_H

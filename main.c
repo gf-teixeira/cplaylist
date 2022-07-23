@@ -1,14 +1,3 @@
-/*********
-Nome do programador: Gabriel Teixeira
-Data do Programa: 28/06/2021
-Descrição do programa: Implementação de uma playlist utilizando lista duplamente encadeada.
-O programa consegue tocar as musicas se os nomes forem válidos e o arquivo mp3  de mesmo nome
-estiver na pasta do programa. Exemplo: Há um arquivo musica.mp3 na pasta do projeto, então
-ao inserir uma musica na lista basta inserir o nome "musica".
-Principais dificuldades encontradas nesta implementação: -
-OBS: o programa possue alguns métodos nativos de sistemas Unix, além disso, é necessário ter o MPV Player 
-instalado.
-*********/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,26 +6,20 @@ instalado.
 #include "player.h"
 #include "list.h"
 
-
-
-
 int main(){
-
-	
-
     struct Node* head = NULL;
-    int count = readingPlaylist(&head);
+    int count = readPlaylist(&head);
     if(count <= 0){
-	count = 1;
+	    count = 1;
     }
     struct Node* current_song = NULL;
     int option = -1;
     int insert_option;
     int item_id;
-    int sucess;
+    int success;
     char aux_title[256];
     do{
-    	sucess=0;
+    	success=0;
         printf("\n\n");
         printf("**** MENU ****");
         printf("\n0 - Sair");
@@ -65,29 +48,28 @@ int main(){
 
                         printf("\nDigite o nome da musica: ");
                         scanf("%s", aux_title);
-                        sucess = insertAtBegin(&head, aux_title, count);
+                        success = insertAtBegin(&head, aux_title, count);
                         break;
                     case 2:
                         if(!isEmpty(head)){
                             list(head);
                             printf("\nDeseja inserir apos qual musica?\n");
                             scanf("%d", &item_id);
-                            sucess = insert(returnItem(head, item_id), count);
+                            success = insert(returnItem(head, item_id), count);
                         }
                         break;
                     case 3:
                         printf("\nDigite o nome da musica: ");
                         scanf("%s", aux_title);
-                        sucess = insertAtEnd(&head, aux_title, count);
+                        success = insertAtEnd(&head, aux_title, count);
                         break;
                     default:
                         printf("\nValor Invalido");
                         break;
-
                 }
-                if(sucess==1){
-		    count++;
-                    printf("\nMusica adicionada com sucesso.");
+                if(success==1){
+		            count++;
+                    printf("\nMusica adicionada com successo.");
                 }
                 break;
 
@@ -96,8 +78,8 @@ int main(){
                     list(head);
                     printf("\nQual Musica deseja excluir?\n");
                     scanf("%d", &item_id);
-                    sucess = removeItem(&head, returnItem(head, item_id));
-                    if(sucess==1){
+                    success = removeItem(&head, returnItem(head, item_id));
+                    if(success==1){
                         count--;
                     }
                 }
@@ -149,5 +131,6 @@ int main(){
 
     savePlaylist(head);
     deleteList(&head);
+    
     return 0;
 }

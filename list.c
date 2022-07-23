@@ -1,20 +1,16 @@
-
 #include "node.h"
 #include "list.h"
-
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-/*Funções Auxiliares*/
 int isEmpty(struct Node* head){
     if(head == NULL){
         return 1;
     }
     return 0;
 }
-
 
 void sortById(struct Node** head){
     if(isEmpty(*head)){
@@ -85,7 +81,7 @@ void sortByTitle(struct Node** head){
         while(next){
             swapped =0;
             if(strcmp(current->title, next->title)>0){
-                swapped =1;
+                swapped = 1;
                 const struct Node* aux_current_prev = current->prev;
                 const struct Node* aux_current_next = current->next;
                 if(current->prev != NULL){
@@ -138,7 +134,6 @@ struct Node* returnItem (struct Node* head, int id){
     return aux;
 }
 
-/*************************************************/
 int insertAtBegin(struct Node** head, char title[], int id){
 
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
@@ -248,9 +243,8 @@ int removeItem(struct Node** head, struct Node* item){
     free(item);
     system("clear");
     printf("\n Musica removida.");
+    
     return 1;
-
-
 }
 
 void savePlaylist(struct Node* head){
@@ -284,6 +278,7 @@ int readingPlaylist(struct Node** head){
     }
     system("clear");
     list(*head);
+
     return new_count+1;
 }
 
@@ -297,7 +292,6 @@ void deleteList(struct Node** head){
         free(current);
         current = next;
     }
-
     (*head) = NULL;
 }
 
