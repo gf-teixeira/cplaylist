@@ -14,7 +14,7 @@ int isEmpty(struct Node* head){
 
 void sortById(struct Node** head){
     if(isEmpty(*head)){
-        printf("\nLista vazia.");
+        printf("\nEmpty List");
         return;
     }
     int swapped;
@@ -70,7 +70,7 @@ void sortById(struct Node** head){
 
 void sortByTitle(struct Node** head){
     if(isEmpty(*head)){
-        printf("\nLista vazia.");
+        printf("\nEmpty list");
         return;
     }
     int swapped;
@@ -135,13 +135,11 @@ struct Node* returnItem (struct Node* head, int id){
 }
 
 int insertAtBegin(struct Node** head, char title[], int id){
-
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
 
     new_node->prev = NULL;
     new_node->id = id;
-    //se a lista estiver vazia o ponteiro head apontará para o novo elemento
-    // e o atributo next do novo elemento recebe NULL
+
     strcpy(new_node->title, title);
     if(isEmpty(*head)){
         (*head) = new_node;
@@ -160,7 +158,7 @@ int insertAtBegin(struct Node** head, char title[], int id){
 
 int insert(struct Node* item, int id){
     char title_aux[256];
-    printf("\nDigite o nome da musica: ");
+    printf("\nSong name: ");
     scanf("%s", title_aux);
 
     struct Node * new_node = (struct Node*) malloc(sizeof(struct Node));
@@ -211,7 +209,7 @@ void list(struct Node* head){
 
     system("clear");
     if(isEmpty(head)){
-        printf("\nPlaylist vazia");
+        printf("\nEmpty playlist");
         return;
     }
     printf("\n*** Playlist ***\n");
@@ -221,28 +219,21 @@ void list(struct Node* head){
         printf(" %s ", aux->title);
         aux = aux->next;
     }
-
-
 }
 
 int removeItem(struct Node** head, struct Node* item){
-
     if((*head) == item){
         (*head) = item->next;
     }
-    //se  o elemento a ser deletado não é o último
-    //o atributo prev (anterior) do elemento após o item a ser excluido recebe o elemento anterior ao item a ser excluido
     if(item->next != NULL){
         item->next->prev = item->prev;
     }
-    //se o elemento a ser deletado não é o primeiro:
-    //o antributo next (próximo) do elemento anterior recebe o atribudo next (próximo) do elemento a ser deletado.
     if(item->prev != NULL){
         item->prev->next = item->next;
     }
     free(item);
     system("clear");
-    printf("\n Musica removida.");
+    printf("\n Song deleted");
     
     return 1;
 }

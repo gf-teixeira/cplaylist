@@ -22,61 +22,61 @@ int main(){
     	success=0;
         printf("\n\n");
         printf("**** MENU ****");
-        printf("\n0 - Sair");
-        printf("\n1 - Inserir");
-        printf("\n2 - Excluir");
-        printf("\n3 - Listar");
-        printf("\n4 - Ordenar por Ordem de Insercao");
-        printf("\n5 - Ordenar por Título");
-        printf("\n6 - Anterior");
+        printf("\n0 - Exit");
+        printf("\n1 - Add Song");
+        printf("\n2 - Delete Song");
+        printf("\n3 - List");
+        printf("\n4 - Sort by insertion");
+        printf("\n5 - Sort by title");
+        printf("\n6 - Previous");
         printf("\n7 - Play");
-        printf("\n8 - Proxima");
-        printf("\n9 - Pausar");
-        printf("\n10 - Voltar a Tocar\n");
+        printf("\n8 - Next");
+        printf("\n9 - Stop");
+        printf("\n10 - Play Again\n");
         scanf("%d", &option);
         switch(option){
 
             case 1:
                 system("clear");
-                printf("\n1 - Inserir no Inicio");
-                printf("\n2 - Inserir entre duas musicas");
-                printf("\n3 - Inserir no Final\n");
+                printf("\n1 - Insert at the beginning");
+                printf("\n2 - Insert between two songs");
+                printf("\n3 - Insert at the end\n");
                 scanf("%d", &insert_option);
 
                 switch(insert_option){
                     case 1:
 
-                        printf("\nDigite o nome da musica: ");
+                        printf("\nSong name: ");
                         scanf("%s", aux_title);
                         success = insertAtBegin(&head, aux_title, count);
                         break;
                     case 2:
                         if(!isEmpty(head)){
                             list(head);
-                            printf("\nDeseja inserir apos qual musica?\n");
+                            printf("\nInsert after which song?\n");
                             scanf("%d", &item_id);
                             success = insert(returnItem(head, item_id), count);
                         }
                         break;
                     case 3:
-                        printf("\nDigite o nome da musica: ");
+                        printf("\nSong name");
                         scanf("%s", aux_title);
                         success = insertAtEnd(&head, aux_title, count);
                         break;
                     default:
-                        printf("\nValor Invalido");
+                        printf("\nInvalid value");
                         break;
                 }
                 if(success==1){
 		            count++;
-                    printf("\nMusica adicionada com successo.");
+                    printf("\nSong added successfully");
                 }
                 break;
 
             case 2:
                 if(!isEmpty(head)){
                     list(head);
-                    printf("\nQual Musica deseja excluir?\n");
+                    printf("\nDo you want to delete which song?\n");
                     scanf("%d", &item_id);
                     success = removeItem(&head, returnItem(head, item_id));
                     if(success==1){

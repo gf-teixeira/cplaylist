@@ -1,36 +1,36 @@
 # cplaylist
 
-cplaylist é um progama que gerencia uma playlist de música (ou uma playlist de qualquer mídia .mp3).
+cplaylist is a software to manage a music playlist 
 
-cplaylist possibilita:
+cplaylist functionalities
 
-- Inserir música
+- Add song 
 
-- Excluir música
+- Delete Song
 
-- Listar playlist
+- List playlist
 
-- Ordenar por ordem de inserção
+- Sort by insertion order
 
-- Ordenar por Título
+- Sort by title
 
-- Tocar música anterior
+- Play previous song
  
-- Tocar música atual.
+- Play current song
  
-- Tocar próxima música
+- Play next song
  
-- Pausar
+- Stop song
  
-- Voltar a tocar
+- Play again
  
-# Requisitos/dependências
+# Requirements 
 
 - MPV Playler
 
-- Sistema Operacional derivado de Unix.
+- Unix based operating system.
 
-# Como rodar?
+# How to run
 
 - compile
 
@@ -39,9 +39,5 @@ cplaylist possibilita:
  - execute
 
        ./cplaylist
-    
-Para conseguir tocar uma música é necessário possuir um arquivo mp3 de mesmo nome no diretório raiz do projeto. 
-Exemplo: quero tocar a música "Stromae - Alors On Danse.mp3", então é necessário ter o arquivo no diretório raiz do projeto e, no momento da inserção da música na playlist, basta inserir o mesmo nome do arquivo (sem a extensão .mp3).
 
-
-
+To use the software properly it is necessary to add the .mp3 files to the project root 
